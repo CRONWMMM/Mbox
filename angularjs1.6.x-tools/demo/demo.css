@@ -1,0 +1,25 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+html,body{
+	height: 3000px;
+}
+.wrap{
+	width: 99.4%;
+	min-height: 300px;
+	margin: 4px auto;
+	border: 1px solid #ccc;
+}
+.switch{
+	margin: 20px 0;
+}
+.selector{
+	float: left;
+	margin-right: 10px;
+}
+
+.active{
+	background-color: #ffecc7;
+}

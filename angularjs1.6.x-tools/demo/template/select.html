@@ -1,0 +1,82 @@
+<style>
+	.select{
+		position: relative;
+		left: 300px;
+		width: 130px;
+	}
+	.select .value-box{
+		width: 100%;
+		height: 26px;
+		background-color: white;
+	}
+	.select .drop-down{
+		position: absolute;
+		top: 27px;
+		left: 0;
+		width: 100%;
+		height: 160px;
+		border: 1px solid #ccc;
+		box-sizing: border-box;
+		background-color: white;
+		overflow-y: auto;
+	}
+	.select ul.drop-down{
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.select ul.drop-down li{
+		margin: 0;
+		padding: 0;
+		height: 24px;
+		line-height: 24px;
+		overflow: hidden;
+	}
+	.select ul.drop-down li:hover{
+		background-color: #e0e0e0;
+		cursor: pointer;
+	}
+	.select .value-box .input{
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+	}
+	.select .value-box .arrow{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 22px;
+		height: 22px;
+		position: absolute;
+		top: 2px;
+		right: 2px;
+		z-index: 10;
+		background-color: #dcdcdc;
+	}
+	.select .value-box .arrow:hover{
+		cursor: pointer;
+	}
+	.select .value-box .arrow .icon{
+		display: block;
+		width: 0;
+		height: 0;
+		border-top: 6px solid #666;
+		border-right: 6px solid transparent;
+		border-left: 6px solid transparent;
+	}
+</style>
+<div class="select">
+	<div class="value-box" ng-click="selectInput($event)">
+		<input class="input" type="text" readonly="true" 
+				ng-model="value" ng-blur="inputBlur($event)">
+		<span class="arrow">
+			<span class="icon"></span>
+		</span>
+	</div>
+	<ul class="drop-down" ng-show="dropDown.display">
+		<li ng-repeat="option in list" 
+			ng-class="{active:option.selected}"
+			ng-mouseDown="selectOpition(option)" 
+			ng-bind="option.value"></li>
+	</ul>
+</div>

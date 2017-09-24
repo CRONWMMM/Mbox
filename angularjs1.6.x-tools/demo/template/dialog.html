@@ -1,0 +1,43 @@
+<style>
+	.my-dialog{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		border: 1px solid #ccc;
+		border-radius: 10px;
+		background-color: white;
+		overflow: hidden;
+	}
+	.dialog-header{
+		position: relative;
+		border-bottom: 1px solid #ccc;
+		font-size: 20px;
+		background-color: #eee;
+	}
+	.dialog-header .dialog-title{
+		height: 50px;
+		line-height: 50px;
+		padding: 0 20px;
+	}
+	.dialog-header .dialog-title:hover{
+		cursor: move;
+	}
+	.dialog-header .dialog-close{
+		position: absolute;
+		right: 10px;
+		top: 6px;
+		color: #333;
+	}
+	.dialog-header .dialog-close:hover{
+		color: #0298e2;
+		cursor: pointer;
+	}
+
+</style>
+<div class="my-dialog" ng-show="show">
+	<div class="dialog-header">
+		<div class="dialog-title">标题</div>
+		<div class="dialog-close" ng-click="closeDialog();">&times;</div>
+	</div>
+	<div class="dialog-body" ng-transclude></div>
+</div>

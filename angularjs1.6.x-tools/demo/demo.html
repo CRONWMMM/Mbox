@@ -27,7 +27,15 @@
 			switch="switch2">
 		</div>	
 	</div>
-
+	
+	<div class="wrap drag-wrap" ng-controller="dragCtrl">
+		<h1 ng-bind="title"></h1>
+		<button ng-click="dialog.showDialog()">弹出框</button>
+		<div class="dialog"
+			 my-dialog
+			 show="dialog.show">
+		</div>
+	</div>
 	<script src="../libs/angular.js"></script>
 	<script src="demo.js"></script>
 </body>

@@ -109,6 +109,32 @@ date: 2017.9.22
 
 
 
+// 倒计时函数============================================================================================
+	
+	/**
+	 * 倒计时函数
+	 * @param  {number}   seconds  总计时秒数
+	 * @param  {Function} callback 时间走完后的回调函数
+	 * @return {[type]}            [description]
+	 */
+	function countDown(seconds,callback){
+		if(seconds>0){
+			console.log(seconds);
+			setTimeout(function(){
+				seconds--;
+				// 这块还少一步发射事件
+				countDown(seconds,callback);
+			},1000);
+		}else{
+			// 这块也少一个发射事件
+			if(callback && typeof callback === 'function')callback();
+			return ;
+		}
+	}
+
+
+
+
 
 
 

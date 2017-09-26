@@ -113,20 +113,32 @@ date: 2017.9.22
 	
 	/**
 	 * 倒计时函数
-	 * @param  {number}   seconds  总计时秒数
-	 * @param  {Function} callback 时间走完后的回调函数
+	 * @param  {number}   seconds   总计时秒数
+	 * @param  {number}   execution 倒计时运行过程中的执行逻辑 (选传)
+	 * @param  {Function} callback  时间走完后的回调函数 (选传)
 	 * @return {[type]}            [description]
 	 */
-	function countDown(seconds,callback){
+	function countDown(){
+		var seconds = arguments[0] || 0,	// 总计时（s）
+			length = arguments.length,
+			execution,						// 计时过程中的执行逻辑
+			callback;						// 回调
+
+		if(length>1){
+			callback = arguments[length-1];
+		}
+
+		if(length > 2){
+			execution = arguments[1];
+		}
+
 		if(seconds>0){
-			console.log(seconds);
+			if(execution && typeof execution === 'function')execution();
 			setTimeout(function(){
 				seconds--;
-				// 这块还少一步发射事件
-				countDown(seconds,callback);
+				countDown(seconds,execution,callback);
 			},1000);
 		}else{
-			// 这块也少一个发射事件
 			if(callback && typeof callback === 'function')callback();
 			return ;
 		}

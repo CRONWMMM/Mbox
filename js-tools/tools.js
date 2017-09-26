@@ -44,7 +44,7 @@ date: 2017.9.22
 
 
 
-// Url =======================================================================================================================
+// Url ===========================================================================================================================
 
 	/**
 	 * 获取网页地址栏url的参数
@@ -109,7 +109,7 @@ date: 2017.9.22
 
 
 
-// 倒计时函数============================================================================================
+// 倒计时函数==================================================================================================================
 	
 	/**
 	 * 倒计时函数
@@ -133,6 +133,45 @@ date: 2017.9.22
 	}
 
 
+
+// 自定义事件===================================================================================================================
+
+	function EventTarget(){
+		if(!this.handles) this.handles = {};
+	}
+	EventTarget.prototype = {
+		constructor : EventTarget,
+		addHandle : function(type,handler){
+			var type = type.toString(),
+				handlesArr = this.handles[type];
+			if(typeof handlesArr === 'undefined')handlesArr = this.handles[type] = [];
+			if(typeof handler === 'function')handlesArr.push(handler);
+		},
+		removeHandler : function(type,handler){
+			var type = type.toString(),
+				handlesArr = this.handles[type],i,len;
+			if(Array.isArray(handlesArr)){
+				for(i=0,len=handlesArr.length;i<len;i++){
+					if(handlesArr[i]===handler){
+						handlesArr.splice(i,1);
+						break;
+					}
+				}
+			}
+		},
+		trigger : function(event){
+			if(!event.target){
+				event.target = this;
+			}
+			var type = event.type.toString(),
+				handlesArr = this.handles[type],i,len;
+			if(Array.isArray(handlesArr)){
+				for(i=0,len=handlesArr.length;i<len;i++){
+					handlesArr[i].call(event.target,event);
+				}
+			}
+		}
+	};
 
 
 

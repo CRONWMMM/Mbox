@@ -107,5 +107,12 @@ app.controller('dragCtrl',['$scope',function($scope){
 }]);
 
 
+/**
+ * timePicker控制器
+ */
+app.controller('timePickerCtrl',['$scope',function($scope){
+	$scope.title = "Time-Picker";
+}]);
+
 
 

@@ -1,0 +1,63 @@
+<style>
+	.timePicker input{
+		display: block;
+		width: 100%;
+		height: 30px;
+		line-height: 30px;
+		border-radius: 6px !important;
+		border: 1px solid #b3b3b3 !important;
+		box-sizing: border-box;
+	}
+	.timePicker .select-box{
+		width: 100%;
+		height: 100%!important;
+		font-size: 16px;
+		padding: 0 8px;
+	}
+	.timePicker .dropDown-box{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top: 34px;
+		left: 0;
+		width: 100%;
+		height: 200px;
+		border-radius: 6px;
+		border: 1px solid #b3b3b3;
+		box-sizing: border-box;
+	}
+	.timePicker .dropDown-box .pick-area{
+		position: absolute;
+		top: 0;
+		width: 40%;
+		height: 100%;
+	}
+	.timePicker .dropDown-box .hour-pick{
+		left: 0;
+	}
+	.timePicker .dropDown-box .min-pick{
+		right: 0;
+	}
+	.timePicker .dropDown-box .pick-area input{
+		top: 0;
+		bottom: 0;
+		margin: auto;
+		text-align: center;
+	}
+</style>
+
+<input type="text" class="select-box" readonly="readonly" value="wer">
+<div class="dropDown-box">
+	<div class="hour-pick pick-area">
+		<span></span>
+		<input type="text" class="">
+		<span></span>
+	</div>
+	<span class="">:</span>
+	<div class="min-pick pick-area">
+		<span></span>
+		<input type="text" class="">
+		<span></span>
+	</div>
+</div>

@@ -23,12 +23,12 @@ app.directive('myDialog',['$document',function($document){
 		}],
 		link : function(scope,element,attr){
 			var header = element.find('div').eq(1),
-				startX,
-				startY,
-				x,
-				y,
-				clientStartX,
-				clientStartY;
+				startX,				// 弹出框初始left
+				startY,				// 弹出框初始top
+				x,					// 弹出框移动后的left
+				y,					// 弹出框移动后的top
+				clientStartX,		// 鼠标点击处距离窗口top
+				clientStartY;		// 鼠标点击处距离窗口left
 			header.on('mousedown',function($event){
 				var posObj =  _getPosition(element[0]);
 				startX = posObj.left;

@@ -41,7 +41,9 @@ html,body{
 
 .timePicker{
 	position: relative;
-	width: 200px;
+	top: 40px;
+	left: 300px;
+	width: 160px;
 	height: 30px;
 }
 

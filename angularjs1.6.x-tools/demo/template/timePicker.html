@@ -14,15 +14,18 @@
 		font-size: 16px;
 		padding: 0 8px;
 	}
+	.timePicker .select-box:hover{
+		cursor: pointer;
+	}
 	.timePicker .dropDown-box{
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		position: absolute;
-		top: 34px;
+		top: 32px;
 		left: 0;
 		width: 100%;
-		height: 200px;
+		height: 130px;
 		border-radius: 6px;
 		border: 1px solid #b3b3b3;
 		box-sizing: border-box;
@@ -34,12 +37,36 @@
 		height: 100%;
 	}
 	.timePicker .dropDown-box .hour-pick{
-		left: 0;
+		left: 6px;
 	}
 	.timePicker .dropDown-box .min-pick{
-		right: 0;
+		right: 6px;
+	}
+	.timePicker .dropDown-box .pick-area .btn{
+		/*basic-style*/
+		position: absolute;
+		width: 100%;
+		height: 36px;
+		border-radius: 6px;
+		border: 1px solid #b3b3b3;
+		
+		/*Convertible-style*/
+		line-height: 36px;
+		text-align: center;
+		font-weight: bolder;
+	}
+	.timePicker .dropDown-box .pick-area .btn:hover{
+		cursor: pointer;
+		background-color: #eee;
+	}
+	.timePicker .dropDown-box .pick-area .plus{
+		top: 4px;
+	}
+	.timePicker .dropDown-box .pick-area .minus{
+		bottom: 4px;
 	}
 	.timePicker .dropDown-box .pick-area input{
+		position: absolute;
 		top: 0;
 		bottom: 0;
 		margin: auto;
@@ -47,17 +74,17 @@
 	}
 </style>
 
-<input type="text" class="select-box" readonly="readonly" value="wer">
+<input type="text" class="select-box" readonly="readonly">
 <div class="dropDown-box">
 	<div class="hour-pick pick-area">
-		<span></span>
-		<input type="text" class="">
-		<span></span>
+		<span class="btn plus">+</span>
+		<input type="text">
+		<span class="btn minus">-</span>
 	</div>
 	<span class="">:</span>
 	<div class="min-pick pick-area">
-		<span></span>
-		<input type="text" class="">
-		<span></span>
+		<span class="btn plus">+</span>
+		<input type="text">
+		<span class="btn minus">-</span>
 	</div>
 </div>

@@ -11,9 +11,11 @@ app.directive('myTimePicker',['$document','$timeout',function($document,$timeout
 		restrict : "AE",
 		templateUrl : "./template/timePicker.html",
 		scope : {
-
+			
 		},
-		link : function(){},
+		link : function(scope,element,attrs){
+			
+		},
 		controller : ['$scope',function($scope){
 			
 		}]

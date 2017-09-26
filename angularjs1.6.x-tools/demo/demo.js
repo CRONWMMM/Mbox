@@ -112,6 +112,7 @@ app.controller('dragCtrl',['$scope',function($scope){
  */
 app.controller('timePickerCtrl',['$scope',function($scope){
 	$scope.title = "Time-Picker";
+	$scope.value = 'asdf'
 }]);
 
 

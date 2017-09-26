@@ -153,15 +153,22 @@ date: 2017.9.22
 	}
 	EventTarget.prototype = {
 		constructor : EventTarget,
+		// 注册事件
 		addHandle : function(type,handler){
 			var type = type.toString(),
 				handlesArr = this.handles[type];
 			if(typeof handlesArr === 'undefined')handlesArr = this.handles[type] = [];
 			if(typeof handler === 'function')handlesArr.push(handler);
 		},
+
+		// 移除事件
 		removeHandler : function(type,handler){
 			var type = type.toString(),
 				handlesArr = this.handles[type],i,len;
+			if(typeof handler === 'undefined'){
+				this.handles[type] = void(0);
+				return ;
+			}
 			if(Array.isArray(handlesArr)){
 				for(i=0,len=handlesArr.length;i<len;i++){
 					if(handlesArr[i]===handler){
@@ -171,6 +178,8 @@ date: 2017.9.22
 				}
 			}
 		},
+
+		// 触发事件
 		trigger : function(event){
 			if(!event.target){
 				event.target = this;

@@ -194,26 +194,34 @@ jQuery.fn = jQuery.prototype = {
 
 jQuery.extend = jQuery.fn.extend = function() {
 	var options, name, src, copy, copyIsArray, clone,
+		// 传入函数的第一个参数作为合并的目标，如果没有就赋一个空对象给target
 		target = arguments[ 0 ] || {},
+		// 给一个起始位置，后面会判断arguments个数，来进一步确定这个起始位置
+		// 作为for循环伊始，从第i个参数开始，往后都算做需要合并的子对象
 		i = 1,
 		length = arguments.length,
+		// 深拷贝开关，默认为false
 		deep = false;
 
 	// Handle a deep copy situation
+	// 如果发现第一个参数为布尔类型，则将它作为深拷贝开关
 	if ( typeof target === "boolean" ) {
 		deep = target;
 
 		// Skip the boolean and the target
+		// target的取值取第二个
 		target = arguments[ i ] || {};
 		i++;
 	}
 
 	// Handle case when target is a string or something (possible in deep copy)
+	// 针对target不是函数和对象的情况，将target赋值为一个空对象
 	if ( typeof target !== "object" && !jQuery.isFunction( target ) ) {
 		target = {};
 	}
 
 	// Extend jQuery itself if only one argument is passed
+	// 这个使用来扩展jq自身的，扩展jq的原型对象或者实例
 	if ( i === length ) {
 		target = this;
 		i--;
@@ -222,27 +230,37 @@ jQuery.extend = jQuery.fn.extend = function() {
 	for ( ; i < length; i++ ) {
 
 		// Only deal with non-null/undefined values
+		// 参数不为undefined/null的情况，注意这块用了JS的自动转换，JS自动转换undefined和null是相等的
+		// 将参数对象的引用复制了一份给option变量
 		if ( ( options = arguments[ i ] ) != null ) {
 
 			// Extend the base object
+			// 开始遍历这个参数对象
 			for ( name in options ) {
+				// 分别操作目标对象和子对象
+				// 将name索引的value值缓存在对应的变量中
 				src = target[ name ];
 				copy = options[ name ];
 
 				// Prevent never-ending loop
+				// 这块可能是用来解决循环引用的bug的？
 				if ( target === copy ) {
 					continue;
 				}
 
 				// Recurse if we're merging plain objects or arrays
+				// 如果合并的是普通对象或者数组，就采用递归处理
+				// PS: jQuery.isPlainObject()可以判断传入的参数是否是一个纯粹的对象
+				// 纯粹的对象就是：{}或者new Object()
 				if ( deep && copy && ( jQuery.isPlainObject( copy ) ||
 					( copyIsArray = Array.isArray( copy ) ) ) ) {
 
+					// 如果是数组
 					if ( copyIsArray ) {
 						copyIsArray = false;
 						clone = src && Array.isArray( src ) ? src : [];
 
-					} else {
+					} else {	// 是对象
 						clone = src && jQuery.isPlainObject( src ) ? src : {};
 					}
 
@@ -250,6 +268,7 @@ jQuery.extend = jQuery.fn.extend = function() {
 					target[ name ] = jQuery.extend( deep, clone, copy );
 
 				// Don't bring in undefined values
+				// 非深拷贝情况就简单多了，只要不是undefined就赋给target对应的属性
 				} else if ( copy !== undefined ) {
 					target[ name ] = copy;
 				}
@@ -264,6 +283,9 @@ jQuery.extend = jQuery.fn.extend = function() {
 jQuery.extend( {
 
 	// Unique for each copy of jQuery on the page
+	// 相当于唯一标识符
+	// \D：不是数字，就匹配
+	// "jQuery"+一段整数。数据缓存，ajax，事件机制都需要用到这个唯一标识符
 	expando: "jQuery" + ( version + Math.random() ).replace( /\D/g, "" ),
 
 	// Assume jQuery is ready without the ready module
@@ -535,8 +557,6 @@ function isArrayLike( obj ) {
 	return type === "array" || length === 0 ||
 		typeof length === "number" && length > 0 && ( length - 1 ) in obj;
 }
-
-// 这块应该是个外链的CSS选择引擎~2793行
 var Sizzle =
 /*!
  * Sizzle CSS Selector Engine v2.3.3
@@ -3273,7 +3293,6 @@ function createOptions( options ) {
  *	stopOnFalse:	interrupt callings when a callback returns false
  *
  */
- // $.Callbacks用来管理函数队列。采用了观察者模式
 jQuery.Callbacks = function( options ) {
 
 	// Convert options from String-formatted to Object-formatted if needed
@@ -3510,7 +3529,7 @@ function adoptValue( value, resolve, reject, noValue ) {
 }
 
 jQuery.extend( {
-	// deferred对象就是jQuery的回调函数解决方案。 详见http://www.ruanyifeng.com/blog/2011/08/a_detailed_explanation_of_jquery_deferred_object.html
+
 	Deferred: function( func ) {
 		var tuples = [
 

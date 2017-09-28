@@ -535,6 +535,8 @@ function isArrayLike( obj ) {
 	return type === "array" || length === 0 ||
 		typeof length === "number" && length > 0 && ( length - 1 ) in obj;
 }
+
+// 这块应该是个外链的CSS选择引擎~2793行
 var Sizzle =
 /*!
  * Sizzle CSS Selector Engine v2.3.3
@@ -3271,6 +3273,7 @@ function createOptions( options ) {
  *	stopOnFalse:	interrupt callings when a callback returns false
  *
  */
+ // $.Callbacks用来管理函数队列。采用了观察者模式
 jQuery.Callbacks = function( options ) {
 
 	// Convert options from String-formatted to Object-formatted if needed
@@ -3507,7 +3510,7 @@ function adoptValue( value, resolve, reject, noValue ) {
 }
 
 jQuery.extend( {
-
+	// deferred对象就是jQuery的回调函数解决方案。 详见http://www.ruanyifeng.com/blog/2011/08/a_detailed_explanation_of_jquery_deferred_object.html
 	Deferred: function( func ) {
 		var tuples = [
 

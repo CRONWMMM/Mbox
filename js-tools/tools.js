@@ -83,16 +83,7 @@ date: 2017.9.22
 		deep = argslength>1 ? deep : false;
 		deep = typeof deep === "boolean" ? deep : false;
 
-		if(typeof target === 'object'){			// 对象拷贝
-			copy = {};
-			for(i in target){					// 这块需要做尾调用优化
-				if(deep){
-					copy[i] = extend(target[i],deep);
-				}else{
-					copy[i] = target[i];
-				}
-			}
-		}else if(typeof target === 'array'){	// 数组拷贝
+		if(array.isArray(target)){						// 数组拷贝
 			copy = [];
 			for(i=0,len=target.length;i<len;i++){
 				if(deep){
@@ -101,8 +92,17 @@ date: 2017.9.22
 					copy[i] = target[i];
 				}
 			}
+		}else if(typeof target === 'object'){			// 对象拷贝
+			copy = {};
+			for(i in target){							// 这块需要做尾调用优化
+				if(deep){
+					copy[i] = extend(target[i],deep);
+				}else{
+					copy[i] = target[i];
+				}
+			}
 		}else{
-			copy = target;						// 这边函数就没判断，默认引用原有函数
+			copy = target;								// 这边函数就没判断，默认引用原有函数
 		}
 		return copy;
 	}

@@ -83,7 +83,7 @@ date: 2017.9.22
 		deep = argslength>1 ? deep : false;
 		deep = typeof deep === "boolean" ? deep : false;
 
-		if(array.isArray(target)){						// 数组拷贝
+		if(Array.isArray(target)){						// 数组拷贝
 			copy = [];
 			for(i=0,len=target.length;i<len;i++){
 				if(deep){

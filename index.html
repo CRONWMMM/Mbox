@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>报名表</title>
+    <script src="js/flexible.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-1.10.1.min.js"></script>
+</head>
+<body>
+	<header>
+		<h1>第十次展会</h1>
+		<p class="desp">第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会</p>
+		<div class="info">
+			<p id="time" class="icon time">2017年9月28-29日 8:00-17:00</p>
+			<p id="address" class="icon address">香格里拉大酒店</p>
+		</div>
+	</header>
+	<section>
+		<section class="add_photo"></section>
+		<section class="form">
+			<form>
+				<div class="left">
+					<div class="preview">
+						<img id="img" class="ab_center" src="" alt="">
+						<span class="rephoto"></span>
+						<span class="prompt">请添加本人脸部照片</span>
+					</div>
+					<input id="imageFile" class="hide" type="file" name="image" accept="image/*">
+				</div>
+				<div class="right">
+					<input id="username" class="username" type="text" name="username" placeholder="请输入您的姓名">
+					<input id="phone" class="phone" type="text" name="phone" placeholder="请输入您的手机号">
+					<input id="email" class="email" type="text" name="email" placeholder="请输入邮箱">
+					<input id="company" class="company" type="text" name="company" placeholder="请输入公司名称">
+				</div>
+				<button id="submit" class="submit">提 交</button>
+			</form>
+		</section>
+		
+		<!-- <canvas></canvas> -->
+		
+	</section>
+	<footer>
+		<p>技术支持：苏州万店掌网络科技有限公司</p>
+		<p>联系方式：400-100-1392</p>
+	</footer>
+
+
+<!-- 遮罩和弹框 -->
+	<div class="mask hide"></div>
+	<div id="alert_dialog" class="ab_center dialog hide">
+		<div class="top t-c">请先添加本人脸部照片</div>
+		<hr class="ab_center">
+		<button class="bottom t-c dia_botton takePhoto">确定</button>
+	</div>
+	<div id="select_dialog" class="ab_center dialog hide">
+		<button class="top t-c dia_botton takePhoto">拍照</button>
+		<hr class="ab_center">
+		<button class="bottom t-c dia_botton cancel">取消</button>
+	</div>
+
+
+<script>
+    $(function(){
+        _eventInit();
+    });
+
+    var checkInput = {
+							checkName : function(){},
+							checkPhone : function(){},
+							checkEmail : function(){},
+							checkCompany : function(){},
+							_checkEmpty : function(){}
+						},
+		sendFile = null,		// 上传的图片文件
+		firstUpload = false,	// 第一次上传的标识
+		sendData = {
+			amusementUserJson : {
+				name : '',
+				phoneNumber : '',
+				mail : '',
+				enterpriseName : ''
+			},
+			file : {name : 'cv',age : 13532}
+		};
+
+
+	function _eventInit(){
+	    // 拍照
+        $(".takePhoto").click(function(){
+            $("#imageFile").click();
+        });
+
+		// 取消
+		$(".cancel").click(function(){
+            hideDialog();
+		});
+
+		// fileInput的change事件
+		$("#imageFile").change(function(){
+		    var self = this;
+            // if(this.files[0])showImg(this.files[0]);
+            if(this.files[0])imgResize(this.files[0],function(blob){
+            	sendFile = blob;
+
+            })
+		});
+
+		// 点击提交
+		$("#submit").click(function(e){
+		    e.preventDefault();
+		    submit();
+		});
+
+		$(".preview").click(function(e){
+			showDialog();
+		});
+	}
+
+
+	// 提交
+	function submit(){
+/*
+		fillData();
+		console.log(sendData);
+		console.log(typeof sendData.amusementUserJson);
+		console.log(typeof sendData.file);
+		return;
+		$.ajax({
+			url : "../../service/registerAmusementUser.action",
+			type : "POST",
+			// contentType : false,
+			cache : false,
+			data : sendData,
+			success : function(res){
+				console.log(res);
+			},
+			error : function(err){
+				throw new Error(err);
+			}
+		});
+*/
+
+		var formData = fillFormData();
+		$.ajax({
+			url : "../../service/registerAmusementUser.action",
+			type : "POST",
+			contentType : false,
+			processData : false,
+			cache : false,
+			data : formData,
+			success : function(res){
+				console.log(res);
+			},
+			error : function(err){
+				throw new Error(err);
+			}
+		});
+	}
+
+
+	function fillFormData(){
+		var formData = new FormData(),
+			amusementUserJson = JSON.stringify({
+				name : $("#username").val(),
+				amusementId : 1,
+				phoneNumber : $("#phone").val(),
+				mail : $("#email").val(),
+				enterpriseName : $("#company").val()
+			});
+		formData.append("amusementUserJson",amusementUserJson);
+		formData.append("file",sendFile);
+		return formData;
+	}
+
+
+	// 填充数据
+	function fillData(){
+		sendData.amusementUserJson.name = $("#username").val();
+		sendData.amusementUserJson.phoneNumber = $("#phone").val();
+		sendData.amusementUserJson.mail = $("#email").val();
+		sendData.amusementUserJson.enterpriseName = $("#company").val();
+		sendData.amusementUserJson = JSON.stringify(sendData.amusementUserJson);
+	}
+
+
+	function hideDialog(){
+		$(".dialog,.mask").animate({
+			opacity : 0
+		},200,function(){
+			$(".dialog,.mask").hide();
+		});
+	}
+
+	function showDialog(){
+		$(".dialog,.mask").show().animate({
+			opacity : 1
+		},200);
+	}
+
+
+/*
+	// 压缩图片
+	function compress(img){
+		var originWidth = img.width,
+			originHeight = img.height,
+			width = $(".preview").width(),
+			ratio = getRatio(originWidth,width),
+			height = originHeight/ratio,
+			canvas = $("canvas")[0],
+			cxt = canvas.getContext("2d");
+			console.log(originWidth,width,ratio);
+		$("canvas").width(width).height(height);
+		cxt.drawImage(img,0,0,width,height);
+		img.newImageData = canvas.toDataURL('image/jpeg', 0.1);
+	}
+
+
+	// 计算图片比率
+	function getRatio(originSize,compressSize){
+		var ratio;
+		ratio = originSize/compressSize;
+		return ratio;
+	}
+
+
+	function showImg(file){
+	    var reader;
+		if(typeof FileReader === 'undefined'){
+			alert("您的浏览器不支持图片预览功能");
+			return;
+		}
+		reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function(e){
+            var pvImg = new Image();
+            pvImg.src = e.target.result;
+            pvImg.onload = function(){
+
+				compress(this);
+
+                sendFile = dataURLtoBlob(this.newImageData);
+                $("#img").attr("src",this.newImageData);
+                // console.log(typeof this.newImageData);
+//                console.log(dataURLtoBlob(this.newImageData));
+//                console.log(this);
+			};
+		};
+	}
+
+
+	// base64转换Blob
+    function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {type:mime});
+    }
+
+*/
+
+
+	// 图片压缩
+	function imgResize(file, callback){
+	  var fileReader = new FileReader();
+	  fileReader.onload = function(){
+	    var IMG = new Image();
+	    IMG.src = this.result;
+	    IMG.onload = function(){
+	      var w = this.naturalWidth, h = this.naturalHeight, resizeW = 0, resizeH = 0;
+	      // maxSize 是压缩的设置，设置图片的最大宽度和最大高度，等比缩放，level是报错的质量，数值越小质量越低
+	      var maxSize = {
+	        width: 500,
+	        height: 500,
+	        level: 0.6
+	      };
+	      if(w > maxSize.width || h > maxSize.height){
+	        var multiple = Math.max(w / maxSize.width, h / maxSize.height);
+	        resizeW = w / multiple;
+	        resizeH = h / multiple;
+	      } else {
+	        // 如果图片尺寸小于最大限制，则不压缩直接上传
+	        $("#img").attr("src",IMG.src);
+	        return callback(file)
+	      }
+	      var canvas = document.createElement('canvas'),
+	      ctx = canvas.getContext('2d');
+	      if(window.navigator.userAgent.indexOf('iPhone') > 0){
+	        canvas.width = resizeH;
+	        canvas.height = resizeW;
+	        ctx.rotate(90 * Math.PI / 180);
+	        ctx.drawImage(IMG, 0, -resizeH, resizeW, resizeH);
+	      }else{
+	        canvas.width = resizeW;
+	        canvas.height = resizeH;
+	        ctx.drawImage(IMG, 0, 0, resizeW, resizeH);
+	      }
+	      var base64 = canvas.toDataURL('image/jpeg', maxSize.level);
+	      $("#img").attr("src",base64);
+	      convertBlob(window.atob(base64.split(',')[1]), callback);
+	    }
+	  };
+	  fileReader.readAsDataURL(file);
+	}
+
+
+
+	// base64转二进制
+	function convertBlob(base64, callback){
+	  var buffer = new ArrayBuffer(base64.length);
+	  var ubuffer = new Uint8Array(buffer);
+	  for (var i = 0; i < base64.length; i++) {
+	    ubuffer[i] = base64.charCodeAt(i)
+	  }
+	  var blob;
+	  try {
+	    blob = new Blob([buffer], {type: 'image/jpg'});
+	  } catch (e) {
+	    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
+	    if(e.name === 'TypeError' && window.BlobBuilder){
+	      var blobBuilder = new BlobBuilder();
+	      blobBuilder.append(buffer);
+	      blob = blobBuilder.getBlob('image/jpg');
+	    }
+	  }
+	  callback(blob)
+	}
+
+</script>
+</body>
+</html>

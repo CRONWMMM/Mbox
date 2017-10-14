@@ -204,3 +204,80 @@ function bind(fn,obj){
 		return fn.apply(obj,arguments);
 	}
 }
+
+
+
+
+// cavas图片压缩===================================================================================================================
+function imgResize(file,callback){
+	var fileReader = new FileReader();
+	fileReader.onload = function(){
+	    var IMG = new Image();
+	    IMG.src = this.result;
+	    IMG.onload = function(){
+	      var w = this.naturalWidth, h = this.naturalHeight, resizeW = 0, resizeH = 0;
+	      // maxSize 是压缩的设置，设置图片的最大宽度和最大高度，等比缩放，level是报错的质量，数值越小质量越低
+	      var maxSize = {
+	        width: 500,
+	        height: 500,
+	        level: 0.6
+	      };
+	      if(w > maxSize.width || h > maxSize.height){
+	        var multiple = Math.max(w / maxSize.width, h / maxSize.height);
+	        resizeW = w / multiple;
+	        resizeH = h / multiple;
+	      } else {
+	        // 如果图片尺寸小于最大限制，则不压缩直接上传
+	        return callback(IMG)
+	      }
+	      var canvas = document.createElement('canvas'),
+	      ctx = canvas.getContext('2d');
+	      if(window.navigator.userAgent.indexOf('iPhone') > 0){
+	        canvas.width = resizeH;
+	        canvas.height = resizeW;
+	        ctx.rotate(90 * Math.PI / 180);
+	        ctx.drawImage(IMG, 0, -resizeH, resizeW, resizeH);
+	      }else{
+	        canvas.width = resizeW;
+	        canvas.height = resizeH;
+	        ctx.drawImage(IMG, 0, 0, resizeW, resizeH);
+	      }
+	      var base64 = canvas.toDataURL('image/jpeg', maxSize.level);
+	      convertBlob(window.atob(base64.split(',')[1]), callback);
+	    }
+	  };
+	  fileReader.readAsDataURL(file);
+}
+
+// base64转换二进制
+function convertBlob(base64, callback){
+  var buffer = new ArrayBuffer(base64.length);
+  var ubuffer = new Uint8Array(buffer);
+  for (var i = 0; i < base64.length; i++) {
+    ubuffer[i] = base64.charCodeAt(i)
+  }
+  var blob;
+  // android设备不支持Blob构造函数，用try catch
+  try {
+    blob = new Blob([buffer], {type: 'image/jpg'});
+  } catch (e) {
+    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
+    if(e.name === 'TypeError' && window.BlobBuilder){
+      var blobBuilder = new BlobBuilder();
+      blobBuilder.append(buffer);
+      blob = blobBuilder.getBlob('image/jpg');
+    }
+  }
+  callback(blob);
+}
+
+
+
+
+
+
+
+
+
+
+

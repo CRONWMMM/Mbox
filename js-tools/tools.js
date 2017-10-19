@@ -278,13 +278,27 @@ function convertBlob(base64, callback){
 	
 	/**
 	 * 判空函数
-	 * @param  {number}   seconds   总计时秒数
-	 * @param  {number}   execution 倒计时运行过程中的执行逻辑 (选传)
-	 * @param  {Function} callback  时间走完后的回调函数 (选传)
-	 * @return {[type]}            [description]
+	 * @param  {obj/arr/str}  检测对象
 	 */
 function empty(obj){
-	
+	if(typeof obj === "object"){
+		if(Array.isArray(obj)){			// array
+			return !obj.length>0
+		}else{							// object
+			return !((function(obj){
+				var key,
+					len = 0;
+				for (key in obj){
+					len = ++len;
+				}
+				return len;
+			})(obj))>0;
+		}
+	}else if(typeof obj === "string"){	// string
+		return !(obj.trim()).length>0
+	}else{								// error
+		throw new Error("empty函数接收的参数类型：对象、数组、字符串");
+	}
 }
 
 

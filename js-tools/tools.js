@@ -274,6 +274,18 @@ function convertBlob(base64, callback){
 
 
 
+// 判空函数==================================================================================================================
+	
+	/**
+	 * 判空函数
+	 * @param  {number}   seconds   总计时秒数
+	 * @param  {number}   execution 倒计时运行过程中的执行逻辑 (选传)
+	 * @param  {Function} callback  时间走完后的回调函数 (选传)
+	 * @return {[type]}            [description]
+	 */
+function empty(obj){
+	
+}
 
 
 

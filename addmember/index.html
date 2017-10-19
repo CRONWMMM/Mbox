@@ -2,52 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>报名表</title>
+    <title>添加会员</title>
     <script src="js/flexible.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-1.10.1.min.js"></script>
 </head>
 <body>
-	<header>
-		<h1 id="title"></h1>
-		<!--  
-		<p id="mark" class="desp"></p>
-		<div class="info">
-			<p id="time" class="icon time">2017年9月28-29日 8:00-17:00</p>
-			<p id="address" class="icon address">香格里拉大酒店</p>
-		</div>
-		-->
-	</header>
 	<section>
-		<section class="add_photo"></section>
 		<section class="form">
 			<form>
 				<div class="left">
 					<div class="preview">
 						<img id="img" class="ab_center" src="" alt="">
 						<span id="rephoto" class="rephoto"></span>
-						
+						<span id="prompt" class="prompt t-c">请添加本人脸部照片</span>
 					</div>
-					<span id="prompt" class="prompt t-c">请添加本人脸部照片</span>
 					<input id="imageFile" class="hide" type="file" name="image" accept="image/*">
 				</div>
 				<div class="right">
 					<div><input id="username" class="username formInput" type="text" name="username" placeholder="请输入您的姓名"><span class="icon">*</span></div>
 					<div><input id="phone" class="phone formInput" type="text" name="phone" placeholder="请输入您的手机号"><span class="icon">*</span></div>
-					<input id="email" class="email formInput" type="text" name="email" placeholder="请输入邮箱">
-					<input id="company" class="company formInput" type="text" name="company" placeholder="请输入公司名称">
 				</div>
 				<button id="submit" class="submit">提 交</button>
-
-
 			</form>
-			<button id="submit-success" class="submit-success hide">报名成功</button>
 		</section>
 	</section>
-	<footer>
-		<p>技术支持：苏州万店掌网络科技有限公司</p>
-		<p>联系方式：400-100-1392</p>
-	</footer>
 
 
 <!-- 遮罩和弹框 -->
@@ -62,11 +41,6 @@
 		<hr class="ab_center">
 		<button class="bottom t-c dia_botton cancel">确定</button>
 	</div>
-	<div id="select_dialog" class="ab_center dialog hide">
-		<button class="top t-c dia_botton takePhoto">拍照</button>
-		<hr class="ab_center">
-		<button class="bottom t-c dia_botton cancel">取消</button>
-	</div>
 	<div id="loading" class="loader hide">
 		<ul class="loading">
 	      <li></li>
@@ -77,22 +51,31 @@
 	    </ul>
 	    <span class="waiting">请稍后...</span>
 	</div>
-		<div id="successPaper" class="successPaper ab_center hide">
+
+	<div id="successPaper" class="successPaper ab_center hide">
 		<div class="gift-icon"></div>
 		<div class="success-info">
-			<p><strong>报名成功</strong></p>
+			<p><span class="hook-icon"></span>提交成功</p>
+			<p>请找工作人员领取 <strong>神秘大奖！</strong></p>
 		</div>
 	</div>
 <script>
+	(function(global,$,doc){
+
+	})(this,this.jQuery,document);
     $(function(){
     	// 事件初始化
         _eventInit();
-        // 页面活动信息初始化
-        _amusementInfoInit();
+        // 确认通过正确方式登录
+        _checkLogin();
+        // 检测有无faceUrl
+        _checkFaceUrl();
         _showRePhoto();
     });
-	var isRepeat = false;
-    var disable = false;	// 阻止重复提交开关
+	var isRepeat = false,
+		retaken = false,	// 是否重拍
+		useFaceUrl = true,	// 是否使用faceUrl地址作为图片
+    	disable = false,	// 阻止重复提交开关
 
     	// 检测输入类
     	checkInput = {
@@ -128,37 +111,6 @@
 							    }
 							},
 						},
-						checkEmail : {
-							errorInfo : "",
-							index : 2,
-							checkFunc : function(input,callback){
-								var input = checkInput._trim(input),
-									empty = true;
-								input = checkInput._htmlFilter(input);
-								empty = checkInput._checkEmpty(input);
-								if(empty){
-									this.errorInfo = "";
-								}else{
-									if(!(/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/.test(input))){
-										this.errorInfo = "请输入正确的邮箱";
-							    		return;
-									}else{
-										this.errorInfo = "";
-							    		callback(input);
-									}
-								}
-							},
-						},
-						checkCompany : {
-							errorInfo : "",
-							index : 3,
-							checkFunc : function(input,callback){
-								var input = checkInput._trim(input),
-									empty = true;
-								input = checkInput._htmlFilter(input);
-								callback(input);
-							},
-						},
 
 						// 判空
 						_checkEmpty : function(input){
@@ -191,75 +143,21 @@
 							return true;
 						}
 					},
-		// 检测人脸类
-		checkFace = {
-			sendFlag : false,
-			checkFunc : function(successCallBack,failCallBack){
-				var formData = new FormData();
-				formData.append("file",sendFile);
-                formData.append("amusementId",amusementInfo.id);
-				$.ajax({
-					url : "../../service/faceRecognize.action",
-					type : "POST",
-					contentType : false,
-					processData : false,
-					cache : false,
-					data : formData,
-					success : function(res){
-						if(res.result === "ok"){
-							successCallBack(res);
-						}else{
-                            failCallBack(res.result);
-						}/*else if(res.result === "FACE_RECOGNIZE_FAILED"){
-							failCallBack(res.result);
-						}else if(res.result === 'ew'){
-
-						}*/
-					},
-					error : function(err){
-						throw new Error(err);
-					}
-				});
-			}
-		},
 		sendFile = null,		// 上传的图片文件
 		amusementInfo = {		// 活动信息
-			id : getUrlParam("id"),
-			name : getUrlParam("name"),
-			// mark : getUrlParam("mark"),
-			address : getUrlParam("address"),
-			time : timeSplice(getUrlParam("startTime"),getUrlParam("endTime"))	
-		},
-		faceInfo = {			// 人脸信息
-			faceToken : "",
-			faceUrl : ""
+			amusementId : getUrlParam("amusementId"),
+			depId : getUrlParam("depId"),
+			faceUrl : getUrlParam("faceUrl")
 		},
 		userInfo = {			// 用户信息
 			name : "",
-			phoneNumber : "",
-			mail : "",
-			enterpriseName : ""
+			phoneNumber : ""
 		},
 		firstUpload = true;		// 第一次上传的标识
 
 
-	function _amusementInfoInit(){
-		for(var i in amusementInfo){
-			if(!amusementInfo[i]){
-				alert("请获取正确的报名链接");
-				$("body").text("");
-				window.close();
-				return;
-			}
-		}
-		$("#title").text(amusementInfo.name);
-		// $("#mark").text(amusementInfo.mark);
-		// $("#time").text(amusementInfo.time);
-		// $("#address").text(amusementInfo.address);
-	}
-
-
 	function _eventInit(){
+
 	    // 拍照
         $(".takePhoto").click(function(){
             $("#imageFile").click();
@@ -268,43 +166,32 @@
 
 		// 取消
 		$(".cancel").click(function(){
-            hideDialog([".dialog",".mask"]);
+			if(!retaken){
+				hideDialog([".dialog",".mask"]);
+			}else{
+				retaken = false;
+				$("#imageFile").click();
+				hideDialog([".dialog",".mask"]);
+			}
 		});
 
 
 		// fileInput的change事件
 		$("#imageFile").change(function(){
 		    var self = this;
+		    useFaceUrl = false;
             if(this.files[0]){
             	showDialog("#loading");		// 开loading
-            	$("#prompt").text("正在认证...").css("color","#b3b3b3");
             	imgResize(this.files[0],function(blob){
 	            	sendFile = blob;		// 给file
 	            	firstUpload = false;	// 改变flag值
-	            	checkFace.checkFunc(function(res){
-	            		$("#prompt").text("认证成功").css("color","#00a92e");
-	            		checkFace.sendFlag = true;
-	            		faceInfo.faceToken = res.data.data.faceToken;
-	            		faceInfo.faceUrl = res.data.data.url;
-	            		hideDialog(["#loading",".mask"]);
-	            		_showRePhoto();			// 显示重新拍照icon
-	            	},function(error){
-                        if(error == "DUPLICATE"){
-                            $("#prompt").text("您已经报过名").css("color","#d60000");
-                        }else {
-                            $("#prompt").text("认证失败，请重拍").css("color","#d60000");
-						}
-
-						checkFace.sendFlag = false;
-						hideDialog(["#loading",".mask"]);
-	            		_showRePhoto();			// 显示重新拍照icon
-	            	});
+	            	hideDialog(["#loading",".mask"]);
+	            	_showRePhoto();			// 显示重新拍照icon
 	            })
             }else{
-                $("#img").attr('src','');
-                firstUpload = true;
-                $("#rephoto").hide();
-                $("#prompt").text("请添加本人脸部照片").css("color","#b3b3b3");
+            	$("#img").attr('src','');
+            	firstUpload = true;
+            	$("#rephoto").hide();
 				hideDialog(["mask"]);
             }
 		});
@@ -316,19 +203,19 @@
 		    	// 开启开关
 				disable = true;
 				if(res.result === "ok"){
-					// alert("报名成功");
-//					$("body").text("");
-//					window.close();
+					$("#successPaper").removeClass('hide');
                     isRepeat = true;
                     $("input").attr("disabled",true);
-                    $("#submit-success").removeClass('hide');
-                    $("#successPaper").removeClass('hide');
-                    $(".rephoto").hide();
-
-//                    $("#submit-success").css("background-color","#8acc47");
-                    $("#submit").remove();
                     hideDialog(["#loading",".mask"]);
 					return;
+				}else if(res.result === "FACE_RECOGNIZE_FAILED"){
+					hideDialog(["#loading"]);
+					$("#info_dialog_info").text("认证失败，请重拍");
+					retaken = true;
+					// 提交按钮重置
+					$("#submit").removeClass("disable");
+					disable = false;
+					showDialog("#info_dialog");
 				}else if(res.result === "PHONE_NUMBER_ALREADY_EXIST"){
 					hideDialog(["#loading"]);
 					$("#info_dialog_info").text("手机号已被注册");
@@ -336,15 +223,13 @@
 					// 提交按钮重置
 					$("#submit").removeClass("disable");
 					disable = false;
-
-//					$(".formInput").eq(1).focus();
 					showDialog("#info_dialog");
 				} else{
-                    hideDialog(["#loading"]);
-                    showDialog("#info_dialog");
-                    $("#submit").removeClass("disable");
-                    disable = false;
-                    $("#info_dialog_info").text("系统正忙,请稍后重试");
+					hideDialog(["#loading"]);
+					showDialog("#info_dialog");
+					$("#submit").removeClass("disable");
+					disable = false;
+					$("#info_dialog_info").text("系统正忙,请稍后重试");
 					return;
 				}
 		    });
@@ -352,10 +237,8 @@
 
 		$(".preview").click(function(e){
 		    if(isRepeat) return;
-//            $("#imageFile").click();
 			if(firstUpload){	// 初次上传
                 $("#imageFile").click();
-//				showDialog("#select_dialog");
 			}else{
 				return;
 			}
@@ -364,9 +247,34 @@
 		$("#rephoto").click(function(e){
             if(isRepeat) return;
             $("#imageFile").click();
-//			showDialog("#select_dialog");
 		});
 	}
+
+	// 检测登录
+	function _checkLogin(){
+		for(var i in amusementInfo){
+			if(!amusementInfo[i] && i !== "faceUrl"){
+				alert("请获取正确的报名链接");
+				$("body").text("");
+				window.close();
+				return;
+			}
+		}
+	}
+
+	// 检测faceUrl
+	function _checkFaceUrl(){
+		var url = amusementInfo.faceUrl;
+		if(url){
+			$("#img").attr('src',url);
+			$("#rephoto").show();
+			firstUpload = false;
+			useFaceUrl = true;
+		}else{
+			useFaceUrl = false;
+		}
+	}
+
 
 
 	// 显示重新拍照icon的开关
@@ -386,13 +294,8 @@
 		var flag,
 			formData;
 		// 人脸检测****************************************************
-		if(!$("#imageFile")[0].files[0]){
+		if(!$("#imageFile")[0].files[0] && !useFaceUrl){
 			changeDialogInfo("请先添加本人脸部照片");
-			showDialog("#alert_dialog");
-			return;
-		}
-		if(!checkFace.sendFlag || !faceInfo.faceToken || !faceInfo.faceUrl){
-			changeDialogInfo("请重新拍摄一张图片");
 			showDialog("#alert_dialog");
 			return;
 		}
@@ -402,7 +305,6 @@
 		if(!flag){	// 检测不通过情况
 			checkInput._canSendOrNot(function(index,errorInfo){
 				$("#info_dialog_info").text(errorInfo);
-//				$(".formInput").eq(0).focus();
 				showDialog("#info_dialog");
 			});
 			return;
@@ -417,7 +319,7 @@
 		// 注册***********************************************************
 		formData = fillFormData();
 		$.ajax({
-			url : "../../service/registerAmusementUser.action",
+			url : "../../service/registMember.action",
 			type : "POST",
 			contentType : false,
 			processData : false,
@@ -436,38 +338,35 @@
 
 	// 填充数据
 	function fillFormData(){
-		var formData = new FormData(),
-			amusementUserJson = JSON.stringify({
-				faceToken : faceInfo.faceToken,
-				faceUrl : faceInfo.faceUrl,
-				amusementId : amusementInfo.id,
+		var formData = new FormData(),vipBoJson;
+		if(useFaceUrl){
+			vipBoJson = JSON.stringify({
 				name : userInfo.name,
 				phoneNumber : userInfo.phoneNumber,
-				mail : userInfo.mail,
-				enterpriseName : userInfo.enterpriseName
+				faceUrl : amusementInfo.faceUrl
 			});
-		formData.append("amusementUserJson",amusementUserJson);
-		// formData.append("file",sendFile);
+		}else{
+			vipBoJson = JSON.stringify({
+				name : userInfo.name,
+				phoneNumber : userInfo.phoneNumber
+			});
+			formData.append("file",sendFile);
+		}
+		formData.append("vipBoJson",vipBoJson);
+		formData.append("amusementId",amusementInfo.amusementId);
+		formData.append("depId",amusementInfo.depId);
 		return formData;
 	}
 
 	// 检测输入
 	function checkData(){
 		var username       = $("#username").val(),
-			phoneNumber    = $("#phone").val(),
-			mail           = $("#email").val(),
-			enterpriseName = $("#company").val();
+			phoneNumber    = $("#phone").val();
 		checkInput.checkName.checkFunc(username,function(input){
 			userInfo.name = input;
 		});
 		checkInput.checkPhone.checkFunc(phoneNumber,function(input){
 			userInfo.phoneNumber = input;
-		});
-		checkInput.checkEmail.checkFunc(mail,function(input){
-			userInfo.mail = input;
-		});
-		checkInput.checkCompany.checkFunc(enterpriseName,function(input){
-			userInfo.enterpriseName = input;
 		});
 		
 		return checkInput._canSendOrNot();

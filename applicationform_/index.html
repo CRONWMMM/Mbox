@@ -9,14 +9,12 @@
 </head>
 <body>
 	<header>
-		<h1 id="title"></h1>
-		<!--  
-		<p id="mark" class="desp"></p>
+		<h1 id="title">第十次展会</h1>
+		<p id="mark" class="desp">第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会第十次展会</p>
 		<div class="info">
 			<p id="time" class="icon time">2017年9月28-29日 8:00-17:00</p>
 			<p id="address" class="icon address">香格里拉大酒店</p>
 		</div>
-		-->
 	</header>
 	<section>
 		<section class="add_photo"></section>
@@ -26,9 +24,8 @@
 					<div class="preview">
 						<img id="img" class="ab_center" src="" alt="">
 						<span id="rephoto" class="rephoto"></span>
-						
+						<span id="prompt" class="prompt t-c">请添加本人脸部照片</span>
 					</div>
-					<span id="prompt" class="prompt t-c">请添加本人脸部照片</span>
 					<input id="imageFile" class="hide" type="file" name="image" accept="image/*">
 				</div>
 				<div class="right">
@@ -38,11 +35,11 @@
 					<input id="company" class="company formInput" type="text" name="company" placeholder="请输入公司名称">
 				</div>
 				<button id="submit" class="submit">提 交</button>
-
-
 			</form>
-			<button id="submit-success" class="submit-success hide">报名成功</button>
 		</section>
+		
+		<!-- <canvas></canvas> -->
+		
 	</section>
 	<footer>
 		<p>技术支持：苏州万店掌网络科技有限公司</p>
@@ -77,12 +74,6 @@
 	    </ul>
 	    <span class="waiting">请稍后...</span>
 	</div>
-		<div id="successPaper" class="successPaper ab_center hide">
-		<div class="gift-icon"></div>
-		<div class="success-info">
-			<p><strong>报名成功</strong></p>
-		</div>
-	</div>
 <script>
     $(function(){
     	// 事件初始化
@@ -91,7 +82,7 @@
         _amusementInfoInit();
         _showRePhoto();
     });
-	var isRepeat = false;
+
     var disable = false;	// 阻止重复提交开关
 
     	// 检测输入类
@@ -197,7 +188,6 @@
 			checkFunc : function(successCallBack,failCallBack){
 				var formData = new FormData();
 				formData.append("file",sendFile);
-                formData.append("amusementId",amusementInfo.id);
 				$.ajax({
 					url : "../../service/faceRecognize.action",
 					type : "POST",
@@ -208,13 +198,9 @@
 					success : function(res){
 						if(res.result === "ok"){
 							successCallBack(res);
-						}else{
-                            failCallBack(res.result);
-						}/*else if(res.result === "FACE_RECOGNIZE_FAILED"){
-							failCallBack(res.result);
-						}else if(res.result === 'ew'){
-
-						}*/
+						}else if(res.result === "FACE_RECOGNIZE_FAILED"){
+							failCallBack();
+						}
 					},
 					error : function(err){
 						throw new Error(err);
@@ -226,7 +212,7 @@
 		amusementInfo = {		// 活动信息
 			id : getUrlParam("id"),
 			name : getUrlParam("name"),
-			// mark : getUrlParam("mark"),
+			mark : getUrlParam("mark"),
 			address : getUrlParam("address"),
 			time : timeSplice(getUrlParam("startTime"),getUrlParam("endTime"))	
 		},
@@ -253,9 +239,9 @@
 			}
 		}
 		$("#title").text(amusementInfo.name);
-		// $("#mark").text(amusementInfo.mark);
-		// $("#time").text(amusementInfo.time);
-		// $("#address").text(amusementInfo.address);
+		$("#mark").text(amusementInfo.mark);
+		$("#time").text(amusementInfo.time);
+		$("#address").text(amusementInfo.address);
 	}
 
 
@@ -288,23 +274,14 @@
 	            		faceInfo.faceUrl = res.data.data.url;
 	            		hideDialog(["#loading",".mask"]);
 	            		_showRePhoto();			// 显示重新拍照icon
-	            	},function(error){
-                        if(error == "DUPLICATE"){
-                            $("#prompt").text("您已经报过名").css("color","#d60000");
-                        }else {
-                            $("#prompt").text("认证失败，请重拍").css("color","#d60000");
-						}
-
+	            	},function(){
+						$("#prompt").text("认证失败，请重新拍摄").css("color","#d60000");
 						checkFace.sendFlag = false;
 						hideDialog(["#loading",".mask"]);
 	            		_showRePhoto();			// 显示重新拍照icon
 	            	});
 	            })
             }else{
-                $("#img").attr('src','');
-                firstUpload = true;
-                $("#rephoto").hide();
-                $("#prompt").text("请添加本人脸部照片").css("color","#b3b3b3");
 				hideDialog(["mask"]);
             }
 		});
@@ -316,18 +293,9 @@
 		    	// 开启开关
 				disable = true;
 				if(res.result === "ok"){
-					// alert("报名成功");
-//					$("body").text("");
-//					window.close();
-                    isRepeat = true;
-                    $("input").attr("disabled",true);
-                    $("#submit-success").removeClass('hide');
-                    $("#successPaper").removeClass('hide');
-                    $(".rephoto").hide();
-
-//                    $("#submit-success").css("background-color","#8acc47");
-                    $("#submit").remove();
-                    hideDialog(["#loading",".mask"]);
+					alert("报名成功");
+					$("body").text("");
+					window.close();
 					return;
 				}else if(res.result === "PHONE_NUMBER_ALREADY_EXIST"){
 					hideDialog(["#loading"]);
@@ -337,34 +305,25 @@
 					$("#submit").removeClass("disable");
 					disable = false;
 
-//					$(".formInput").eq(1).focus();
+					$(".formInput").eq(1).focus();
 					showDialog("#info_dialog");
 				} else{
-                    hideDialog(["#loading"]);
-                    showDialog("#info_dialog");
-                    $("#submit").removeClass("disable");
-                    disable = false;
-                    $("#info_dialog_info").text("系统正忙,请稍后重试");
+					alert("系统正忙,请稍后重试");
 					return;
 				}
 		    });
 		});
 
 		$(".preview").click(function(e){
-		    if(isRepeat) return;
-//            $("#imageFile").click();
 			if(firstUpload){	// 初次上传
-                $("#imageFile").click();
-//				showDialog("#select_dialog");
+				showDialog("#select_dialog");
 			}else{
 				return;
 			}
 		});
 
 		$("#rephoto").click(function(e){
-            if(isRepeat) return;
-            $("#imageFile").click();
-//			showDialog("#select_dialog");
+			showDialog("#select_dialog");
 		});
 	}
 
@@ -402,7 +361,7 @@
 		if(!flag){	// 检测不通过情况
 			checkInput._canSendOrNot(function(index,errorInfo){
 				$("#info_dialog_info").text(errorInfo);
-//				$(".formInput").eq(0).focus();
+				$(".formInput").eq(0).focus();
 				showDialog("#info_dialog");
 			});
 			return;
@@ -530,7 +489,7 @@
 	      }
 	      var canvas = document.createElement('canvas'),
 	      ctx = canvas.getContext('2d');
-	      if(/iPhone|iPad/g.test(window.navigator.userAgent) && resizeW>resizeH){
+	      if(window.navigator.userAgent.indexOf('iPhone') > 0){
 	        canvas.width = resizeH;
 	        canvas.height = resizeW;
 	        ctx.rotate(90 * Math.PI / 180);

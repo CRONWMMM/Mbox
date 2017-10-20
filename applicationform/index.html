@@ -530,7 +530,12 @@
 	      }
 	      var canvas = document.createElement('canvas'),
 	      ctx = canvas.getContext('2d');
-	      if(/iPhone|iPad/g.test(window.navigator.userAgent) && resizeW>resizeH){
+	      if(/MI 6/g.test(window.navigator.userAgent)){
+	      	canvas.width = resizeH;
+	        canvas.height = resizeW;
+	        ctx.rotate(-90 * Math.PI / 180);
+	        ctx.drawImage(IMG, -resizeW, 0, resizeW, resizeH);
+	      }else if(resizeW>resizeH){// /iPhone|iPad/g.test(window.navigator.userAgent) && 
 	        canvas.width = resizeH;
 	        canvas.height = resizeW;
 	        ctx.rotate(90 * Math.PI / 180);

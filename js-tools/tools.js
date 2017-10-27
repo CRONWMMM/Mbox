@@ -304,31 +304,59 @@ function empty(obj){
 
 
 
-// 提取数据========================================================================================================================
-/**提取数据
- * @param target obj/arr 需要提取的目标对象
+// 筛选数据，用于echarts数据可视化========================================================================================================================
+/**筛选数据
+ * @param target obj/arr 需要进行筛选的目标对象
  * @param field str 需要提取的字段名称
  * @private
- * @return Array 包含需要字段信息的数组
+ * @return Array 染回一个包含需要字段信息的数组
+ *
+ *
+ * Test:
+ * var target = [{count:123},{count:3452},[{a:0,count:8909}]]
+ * filterData(target);
+ *
+ * 
+ * Expect:
+ * [123,3452,8909]
+ *
+ *
+ * PC: 此方法编写目的是用于Echarts所需data数据的提取
  */
-function _pickUpData(target,field,arr){
+function filterData(target,field,arr){
     "use strict";
     var arr = (typeof arr === "array") ? arr : [];
     if(typeof field !== "string")console.error("传入_pickUpData函数的参数不合法");
-    if(arguments.length<2)console.error("必须传入_pickUpData函数两个参数");
-    if(Array.isArray(target)){
+    if(arguments.length < 2)console.error("至少传入_pickUpData函数两个参数");
+    if(Array.isArray(target)){	// isArray
         target.forEach(function(item,index){
-           if(typeof value === 'object')arr.push(_pickUpData(item,field,arr));
+           if(typeof item === 'object')Array.prototype.push.apply(arr,filterData(item,field,arr));
         });
-    }else if(typeof target === "object"){
-        // console.log("+1");
-        alert(123);
-        if(typeof target[field] !== "undefined")arr.push(target[field]);
+    }else if(typeof target === "object"){	// isObject
+        if(typeof target[field] !== "undefined"){	
+        	arr.push(target[field]);	// if has found, just push it in target array
+        }else{
+        	for(var key in target){		// Otherwise, the recursive loop is executed
+        		Array.prototype.push.apply(arr,filterData(target[key],field,arr))
+        	}
+        }
     }else{
-        console.error("传入_pickUpData函数的参数不合法");
+        return;
     }
     return arr;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

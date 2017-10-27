@@ -304,6 +304,32 @@ function empty(obj){
 
 
 
+// 提取数据========================================================================================================================
+/**提取数据
+ * @param target obj/arr 需要提取的目标对象
+ * @param field str 需要提取的字段名称
+ * @private
+ * @return Array 包含需要字段信息的数组
+ */
+function _pickUpData(target,field,arr){
+    "use strict";
+    var arr = (typeof arr === "array") ? arr : [];
+    if(typeof field !== "string")console.error("传入_pickUpData函数的参数不合法");
+    if(arguments.length<2)console.error("必须传入_pickUpData函数两个参数");
+    if(Array.isArray(target)){
+        target.forEach(function(item,index){
+           if(typeof value === 'object')arr.push(_pickUpData(item,field,arr));
+        });
+    }else if(typeof target === "object"){
+        // console.log("+1");
+        alert(123);
+        if(typeof target[field] !== "undefined")arr.push(target[field]);
+    }else{
+        console.error("传入_pickUpData函数的参数不合法");
+    }
+    return arr;
+}
+
 
 
 

@@ -285,14 +285,14 @@ function empty(obj){
 		if(Array.isArray(obj)){			// array
 			return !obj.length>0
 		}else{							// object
-			return !((function(obj){
+			return !(function(obj){
 				var key,
 					len = 0;
 				for (key in obj){
 					len = ++len;
 				}
 				return len;
-			})(obj))>0;
+			})(obj)>0;
 		}
 	}else if(typeof obj === "string"){	// string
 		return !(obj.trim()).length>0

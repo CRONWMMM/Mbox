@@ -308,8 +308,7 @@ function empty(obj){
 /**筛选数据
  * @param target obj/arr 需要进行筛选的目标对象
  * @param field str 需要提取的字段名称
- * @private
- * @return Array 染回一个包含需要字段信息的数组
+ * @return Array 返回一个包含需要字段信息的数组
  *
  *
  * Test:
@@ -347,8 +346,27 @@ function filterData(target,field,arr){
 }
 
 
-
-
+// 数组扁平化========================================================================================================================
+	/**拉伸数组
+	 * @param arr Array 需要操作的数组对象
+	 * @return Array 返回拉伸后的数组对象
+	 *
+	 *
+	 * Test:
+	 * var foo1 = [1, [2, 3], [4, 5, [6, 7, [8]]], [9], 10];
+	 * stretchArr(foo1);
+	 *
+	 * 
+	 * Expect:
+	 * ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+	 * 
+	 * 
+	 * PS: 拉伸后的数组元素为String
+	 */
+function stretchArr(arr){
+	if(!Array.isArray(arr)) console.error("请传入一个数组");
+	return arr.join(",").split(",");
+}
 
 
 

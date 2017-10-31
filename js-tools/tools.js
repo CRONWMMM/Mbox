@@ -389,9 +389,29 @@ function randomNum(Min, Max) {
 
 
 
-
-
-
+// 图片批量预加载 ========================================================================================================================
+	/**
+	 * 批量预加载图片函数
+	 * @param IMGArr Array 需要预加载的图片地址
+	 * @param CBEvery Func 每次完成后的回调函数
+	 * @param CBfinal Func 全部完成后的回调函数
+	 * @return null 
+	 * 
+	 */
+function preloadIMG(IMGArr,CBEvery,CBfinal){
+	var img;
+	IMGArr.forEach(function(item, index, array){
+		if(typeof item === "string"){
+			img = new Image();
+			img.onload = function(){
+				this.onload = null;
+				CBEvery.call(this);
+			};
+			img.src = item;
+		}
+	});
+	CBfinal();
+}
 
 
 

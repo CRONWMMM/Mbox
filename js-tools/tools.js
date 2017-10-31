@@ -371,6 +371,44 @@ function stretchArr(arr){
 
 
 
+// 范围随机数 ========================================================================================================================
+	/**
+	 * 范围随机数
+	 * @param min Number 最小数字
+	 * @param max Number 最大数字
+	 * @return Array 返回拉伸后的数组对象 
+	 * 
+	 */
+function randomNum(Min, Max) {
+	var Range = Math.abs(Max - Min);
+	var Rand = Math.random();
+	var num = Min + Math.round(Rand * Range); //四舍五入
+	return num;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

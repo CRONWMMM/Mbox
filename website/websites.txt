@@ -9,3 +9,7 @@
   https://www.w3ctech.com/topic/134 --------------------------- gulp 教程
 
   http://www.jianshu.com/p/0496ef49b2a5 ----------------------- 阿里云部署 NodeJS 教程
+
+  https://aaron-os-mineandcraft12.c9.io ----------------------- aOS 【原生JS模仿win7操作系统】
+
+  https://aaron-os-mineandcraft12.c9.io/aosBeta.php ----------- aOS 系统

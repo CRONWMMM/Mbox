@@ -305,23 +305,23 @@ function empty(obj){
 
 
 // 筛选数据，用于echarts数据可视化========================================================================================================================
-/**筛选数据
- * @param target obj/arr 需要进行筛选的目标对象
- * @param field str 需要提取的字段名称
- * @return Array 返回一个包含需要字段信息的数组
- *
- *
- * Test:
- * var target = [{count:123},{count:3452},[{a:0,count:8909}]]
- * filterData(target);
- *
- * 
- * Expect:
- * [123,3452,8909]
- *
- *
- * PC: 此方法编写目的是用于Echarts所需data数据的提取
- */
+	/**筛选数据
+	 * @param target obj/arr 需要进行筛选的目标对象
+	 * @param field str 需要提取的字段名称
+	 * @return Array 返回一个包含需要字段信息的数组
+	 *
+	 *
+	 * Test:
+	 * var target = [{count:123},{count:3452},[{a:0,count:8909}]]
+	 * filterData(target);
+	 *
+	 * 
+	 * Expect:
+	 * [123,3452,8909]
+	 *
+	 *
+	 * PC: 此方法编写目的是用于Echarts所需data数据的提取
+	 */
 function filterData(target,field,arr){
     "use strict";
     var arr = (typeof arr === "array") ? arr : [];
@@ -368,6 +368,50 @@ function stretchArr(arr){
 	return arr.join(",").split(",");
 }
 
+
+
+// 数组中最大数字提取=======================================================================================================================
+	/**筛选数组中最大数
+	 * @param arr Array 需要进行筛选的目标数组
+	 * @return Array 返回该数组中的最大数
+	 */
+function arrayMax(arr){
+	// 暂不做ES5以下浏览器的兼容
+	if(typeof Array.prototype.reduce === "undefined") return "low end Browser";
+
+	// ES5的归并方法
+	return arr.reduce((prev,cur,i,arr)=>{
+		prev = parseFloat(prev),
+		cur = parseFloat(cur);
+		if(cur > prev){
+			return cur;
+		}else{
+			return prev;
+		}
+	});
+}
+
+
+// 数组中最小数字提取=======================================================================================================================
+	/**筛选数组中最大数
+	 * @param arr Array 需要进行筛选的目标数组
+	 * @return Array 返回该数组中的最小数
+	 */
+function arrayMax(arr){
+	// 暂不做ES5以下浏览器的兼容
+	if(typeof Array.prototype.reduce === "undefined") return "low end Browser";
+
+	// ES5的归并方法
+	return arr.reduce((prev,cur,i,arr)=>{
+		prev = parseFloat(prev),
+		cur = parseFloat(cur);
+		if(cur < prev){
+			return cur;
+		}else{
+			return prev;
+		}
+	});
+}
 
 
 

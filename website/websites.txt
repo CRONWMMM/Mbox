@@ -13,3 +13,6 @@
   https://aaron-os-mineandcraft12.c9.io ----------------------- aOS 【原生JS模仿win7操作系统】
 
   https://aaron-os-mineandcraft12.c9.io/aosBeta.php ----------- aOS 系统
+
+  http://www.iconfont.cn/ ------------------------------------- 阿里矢量图标库
+

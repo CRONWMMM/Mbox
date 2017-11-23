@@ -458,7 +458,28 @@ function preloadIMG(IMGArr,CBEvery,CBfinal){
 }
 
 
-
+ // 格式化时间戳========================================================================================================================
+ ·	/**
+	 * 格式化时间戳函数
+	 * @param inputTime String/Date对象
+	 * @return 转换后的时间字符串 
+	 * 
+	 */
+ function formatDateTime(inputTime) {    
+    var date = new Date(inputTime);  
+    var y = date.getFullYear();    
+    var m = date.getMonth() + 1;    
+    m = m < 10 ? ('0' + m) : m;    
+    var d = date.getDate();    
+    d = d < 10 ? ('0' + d) : d;    
+    var h = date.getHours();  
+    h = h < 10 ? ('0' + h) : h;  
+    var minute = date.getMinutes();  
+    var second = date.getSeconds();  
+    minute = minute < 10 ? ('0' + minute) : minute;    
+    second = second < 10 ? ('0' + second) : second;   
+    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;    
+}; 
 
 
 

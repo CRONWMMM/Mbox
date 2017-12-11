@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>个人中心</title>
+    <!-- <link rel='stylesheet' href='/stylesheets/shelves.css' /> -->
+    <link rel='stylesheet' href='../../public/stylesheets/shelves.css' />
+    <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+    <script src="../../public/js/comm.js"></script>
+</head>
+<body>
+    <header>
+        <div class="title clear-f trans-center">
+            <span class="icon bg"></span>
+            <h4><span></span>商品集结处</h4>
+        </div>
+        <a class="login-icon trans-center bg" href="/account"></a>
+    </header>
+    <section class="wrap clear-f">
+        <div class="module left">
+            <ul class="layer-wrap">
+                <!-- layer-active -->
+                <li class="layer layer-active">一层</li>
+                <li class="layer">二层</li>
+                <li class="layer">三层</li>
+            </ul>
+        </div>
+        <div class="module right">
+            <ul id="goodsList" class="goods-wrap clear-f">
+                <li class="goods">
+                    <div class="info trans-center">
+                        <img src="../../public/images/foo.png" alt="">
+                        <div class="desc">
+                            <span class="name ellipsis">来伊份坚果</span>
+                            <div class="tool clear-f">
+                                <span class="price">￥<span></span></span>
+                                <button class="add">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="goods">
+                    <div class="info trans-center">
+                        <img src="../../public/images/foo.png" alt="">
+                        <div class="desc">
+                            <span class="name ellipsis">来伊份坚果</span>
+                            <div class="tool clear-f">
+                                <span class="price">￥<span></span></span>
+                                <button class="add">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="goods">
+                    <div class="info trans-center">
+                        <img src="../../public/images/foo.png" alt="">
+                        <div class="desc">
+                            <span class="name ellipsis">来伊份坚果</span>
+                            <div class="tool clear-f">
+                                <span class="price">￥<span></span></span>
+                                <button class="add">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="goods">
+                    <div class="info trans-center">
+                        <img src="../../public/images/foo.png" alt="">
+                        <div class="desc">
+                            <span class="name ellipsis">来伊份坚果</span>
+                            <div class="tool clear-f">
+                                <span class="price">￥<span></span></span>
+                                <button class="add">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="goods">
+                    <div class="info trans-center">
+                        <img src="../../public/images/foo.png" alt="">
+                        <div class="desc">
+                            <span class="name ellipsis">来伊份坚果</span>
+                            <div class="tool clear-f">
+                                <span class="price">￥<span></span></span>
+                                <button class="add">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="goods">
+                    <div class="info trans-center">
+                        <img src="../../public/images/foo.png" alt="">
+                        <div class="desc">
+                            <span class="name ellipsis">来伊份坚果</span>
+                            <div class="tool clear-f">
+                                <span class="price">￥<span></span></span>
+                                <button class="add">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="goods">
+                    <div class="info trans-center">
+                        <img src="../../public/images/foo.png" alt="">
+                        <div class="desc">
+                            <span class="name ellipsis">来伊份坚果</span>
+                            <div class="tool clear-f">
+                                <span class="price">￥<span></span></span>
+                                <button class="add">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="goods">
+                    <div class="info trans-center">
+                        <img src="../../public/images/foo.png" alt="">
+                        <div class="desc">
+                            <span class="name ellipsis">来伊份坚果</span>
+                            <div class="tool clear-f">
+                                <span class="price">￥<span></span></span>
+                                <button class="add">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="goods">
+                    <div class="info trans-center">
+                        <img src="../../public/images/foo.png" alt="">
+                        <div class="desc">
+                            <span class="name ellipsis">来伊份坚果</span>
+                            <div class="tool clear-f">
+                                <span class="price">￥<span></span></span>
+                                <button class="add">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="goods">
+                    <div class="info trans-center">
+                        <img src="../../public/images/foo.png" alt="">
+                        <div class="desc">
+                            <span class="name ellipsis">来伊份坚果</span>
+                            <div class="tool clear-f">
+                                <span class="price">￥<span></span></span>
+                                <button class="add">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <footer>
+        <div class="shopcart-icon ellipsis clear-f">
+            <!-- number-icon -->
+            <span id="number" class="number"></span>
+            <span id="shopcart-icon" class="icon bg"></span>
+            <span class="total-price">￥ <span id="total-price"></span></span>
+        </div>
+        <button id="checkout" class="checkout">去结算</button>
+    </footer>
+
+    <!--mask-->
+    <div class="mask fixed-full" id="mask"></div>
+
+    <!-- popup -->
+    <div class="popup" id="popup">
+        <div class="header">
+            <div class="title">已选商品</div>
+            <div id="clearShopCart" class="clear">清空购物车</div>
+        </div>
+        <div class="content">
+            <ul id="shopList" class="shopList">
+                <li class="things">
+                    <span class="name ellipsis"></span>
+                    <div class="operate">
+                        <button class="min">-</button>
+                        <span class="num">0</span>
+                        <button class="add addthisNum">+</button>
+                    </div>
+                    <span class="price">￥ <span></span></span>
+                </li>
+                <li class="things">
+                    <span class="name ellipsis"></span>
+                    <div class="operate">
+                        <button class="min">-</button>
+                        <span class="num">0</span>
+                        <button class="add addthisNum">+</button>
+                    </div>
+                    <span class="price">￥ <span></span></span>
+                </li>
+                <li class="things">
+                    <span class="name ellipsis"></span>
+                    <div class="operate">
+                        <button class="min">-</button>
+                        <span class="num">0</span>
+                        <button class="add addthisNum">+</button>
+                    </div>
+                    <span class="price">￥ <span></span></span>
+                </li>
+                <li class="things">
+                    <span class="name ellipsis"></span>
+                    <div class="operate">
+                        <button class="min">-</button>
+                        <span class="num">0</span>
+                        <button class="add addthisNum">+</button>
+                    </div>
+                    <span class="price">￥ <span></span></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="../../public/js/shelves.js"></script>
+</body>
+</html>

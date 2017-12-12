@@ -313,7 +313,7 @@ function empty(obj){
 	 *
 	 * Test:
 	 * var target = [{count:123},{count:3452},[{a:0,count:8909}]]
-	 * filterData(target);
+	 * filterData(target,count);
 	 *
 	 * 
 	 * Expect:
@@ -332,9 +332,18 @@ function filterData(target,field,arr){
            if(typeof item === 'object')Array.prototype.push.apply(arr,filterData(item,field,arr));
         });
     }else if(typeof target === "object"){	// isObject
-        if(typeof target[field] !== "undefined"){	
+    	if(Array.isArray(target[field])){
+    		if (typeof extend === 'function') {
+    			arr.push(...extend(target[field], true));	// just for ES6
+    		}
+    		else{
+    			throw new Error('Can\'t find function: \'extend\'');
+    		}
+    	}
+        else if(typeof target[field] !== "undefined"){	
         	arr.push(target[field]);	// if has found, just push it in target array
-        }else{
+        }
+        else{
         	for(var key in target){		// Otherwise, the recursive loop is executed
         		Array.prototype.push.apply(arr,filterData(target[key],field,arr))
         	}

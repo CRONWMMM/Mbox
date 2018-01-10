@@ -18,4 +18,9 @@
 
   http://blog.csdn.net/aofavx/article/details/52220394 -------- wechart 公众号支付
 
+  https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_1 -------- wechart 统一下单文档
+
+  https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842---- wechart 网页授权【获取用户信息】
+
   http://www.jianshu.com/p/a43417b28280 ----------------------- app 内嵌H5 安卓浏览器链接调试
+

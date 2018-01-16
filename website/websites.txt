@@ -24,3 +24,4 @@
 
   http://www.jianshu.com/p/a43417b28280 ----------------------- app 内嵌H5 安卓浏览器链接调试
 
+  https://doc.webpack-china.org/configuration/dev-server/#devserver-proxy --- webpack proxy 设置api代理
